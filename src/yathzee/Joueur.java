@@ -31,7 +31,7 @@ public class Joueur {
     private int total;
     
     //numero du joueur
-    private int numeroDuJoueur;
+    private final int numeroDuJoueur;
     private static int compteur = 1;
    
     
@@ -64,8 +64,7 @@ public class Joueur {
     
     @Override
     public String toString(){
-
-
+        
         String s = "Joueur " + numeroDuJoueur + "\n"
                 + "-----Scores-----\n"
                + "1: "+unScore+"\n"
@@ -74,6 +73,7 @@ public class Joueur {
                 + "4: "+quatreScore+"\n"
                 + "5:  "+cinqScore+"\n"
                 + "6: "+sixScore+"\n"
+                + "Bonus:  "+bonusScore+"\n"
                 + "brelon: "+brelanScore+"\n"
                 + "carré: "+carreScore+"\n"
                 + "Full: "+fullScore+"\n"
@@ -81,9 +81,30 @@ public class Joueur {
                 + "grand: "+grandeSuiteScore+"\n"
                 + "Yam: "+YathzeeScore+"\n"
                 + "Chance: "+ChanceScore+"\n"
+                + "Total: "+total+"\n"
                  + "-----Scores-----\n";
         
         return s;
+    }
+    
+    public void estCeQueBonus(){
+        int un = 0, deux = 0, trois = 0, quatre =0, cinq = 0, six = 0;
+        
+        try{
+            un = Integer.parseInt(unScore);
+             deux = Integer.parseInt(deuxScore);
+             trois = Integer.parseInt(troisScore);
+             quatre = Integer.parseInt(quatreScore);
+             cinq = Integer.parseInt(cinqScore);
+             six = Integer.parseInt(sixScore);    
+        }catch(NumberFormatException x){
+            System.out.println("------> Pas de bonus ce round <-----");
+        }
+         
+         
+        if( (un + deux + trois + quatre + cinq + six) >= 63  ){
+            bonusScore = 35;
+        }
     }
     
     public void Joue(){

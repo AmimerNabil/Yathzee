@@ -43,8 +43,8 @@ public class Jeux {
                     System.out.print("Entrez un x pour chaque dé que vous voulez garder:");
                     String entree = scan.nextLine();
                     while(entree.length() != 5){
-                       System.out.print("Entrez un x pour chaque dé que vous voulez garder:"); 
                        entree = scan.nextLine();
+                       entree = entree.toLowerCase();
                     }
                     if(entree.equalsIgnoreCase("xxxxx")) break;
                     else{
@@ -53,34 +53,50 @@ public class Jeux {
                 }
                 montrerDes(des);
                 choisirUneEntreeTexte();
-                int choix = -1;
-                while(choix == -1){
+                
+                int choix= -1;
+                System.out.println(j);
+                while(choix <= 0){
+                    System.out.print("combinason : ");
                     choix = scan.nextInt();
+                    choix = choixSurComposition(choix, des, j);
                 }
-                choixSurComposition(choix, des, j);
+                
                 j.Joue();
+                j.estCeQueBonus();
                 System.out.println("Résultats après avoir joué le tour : ");
                 System.out.println(j);
                 estCeQueFinit();
             }
         }
         
+        Joueur temp = listeDeJoueur.get(0);
+        for(int i = 1; i < listeDeJoueur.size(); i++){
+            if(temp.getTotal() < listeDeJoueur.get(i).getTotal()){
+                temp = listeDeJoueur.get(i);
+            }
+        }
+        
+        System.out.println("Le vaincoeur est donc le joueur " + temp.getNumeroDuJoueur());
+        System.out.println("avec " + temp.getTotal() + " points!");
+        
     }
+    
     
     private void choisirUneEntreeTexte(){
         System.out.println("Choisir une des entrées: \n"
-                + "1: 1\n"
-                + "2: 2\n"
-                + "3: 3\n"
-                + "4: 4\n"
-                + "5: 5\n"
+                + "1: 1\t"
+                + "2: 2\t"
+                + "3: 3\t"
+                + "4: 4\t"
+                + "5: 5\t"
                 + "6: 6\n"
-                + "7: Brelan\n"
-                + "8: Carré \n"
-                + "9: Full\n"
-                + "10: Petite\n"
-                + "11: Grande\n"
-                + "12: Yam\n"
+                + "7: Brelan "
+                + "8: Carré "
+                + "9: Full "
+                + "10: Petite "
+                + "11: Grande "
+                + "12: Yam "
                 + "13: Chance\n");
     }
     
@@ -92,85 +108,84 @@ public class Jeux {
                 if(j.getUnScore().equalsIgnoreCase("")){
                     score = Evaluation.testAs(liste);
                     j.setUnScore(Integer.toString(score));
-                }else score = -1;
+                }else i = -1;
                 break;
             case 2: 
                 if(j.getDeuxScore().equalsIgnoreCase("")){
                     score = Evaluation.testDeux(liste);
                     j.setDeuxScore(Integer.toString(score));
-                }else score = -1;
+                }else i = -1;
                 break;
             case 3: 
                 if(j.getTroisScore().equalsIgnoreCase("")){
                     score =  Evaluation.testTrois(liste);
                     j.setTroisScore(Integer.toString(score));
-                }else score = -1;
+                }else i = -1;
                 break;
             case 4: 
                 if(j.getQuatreScore().equalsIgnoreCase("")){
                     score =  Evaluation.testQuatre(liste);
                     j.setQuatreScore(Integer.toString(score));
-                }else score = -1;
+                }else i = -1;
                 break;
             case 5: 
                 if(j.getCinqScore().equalsIgnoreCase("")){
                     score =  Evaluation.testCinq(liste);
                     j.setCinqScore(Integer.toString(score));
-                }else score = -1;
+                }else i = -1;
                 break;
             case 6: 
                 if(j.getSixScore().equalsIgnoreCase("")){
                     score =  Evaluation.testSix(liste);
                     j.setSixScore(Integer.toString(score));
-                }else score = -1;
+                }else i = -1;
                 break;
             case 7: 
                 if(j.getBrelanScore().equalsIgnoreCase("")){
                     score =  Evaluation.testBrelan(liste);
                     j.setBrelanScore(Integer.toString(score));
-                }else score = -1;
+                }else i = -1;
                 break;
             case 8: 
                 if(j.getCarreScore().equalsIgnoreCase("")){
                     score =  Evaluation.testCarre(liste);
                     j.setCarreScore(Integer.toString(score));
-                }else score = -1;
+                }else i = -1;
                 break;
             case 9: 
                 if(j.getFullScore().equalsIgnoreCase("")){
                     score =  Evaluation.testFull(liste);
                     j.setFullScore(Integer.toString(score));
-                }else score = -1;
+                }else i = -1;
                 break;
             case 10: 
                 if(j.getPetiteSuiteScore().equalsIgnoreCase("")){
                     score =  Evaluation.testPetiteSuite(liste);
                     j.setPetiteSuiteScore(Integer.toString(score));
-                }else score = -1;
+                }else i = -1;
                 break;
             case 11: 
                 if(j.getGrandeSuiteScore().equalsIgnoreCase("")){
                     score =  Evaluation.testGrandeSuite(liste);
                     j.setGrandeSuiteScore(Integer.toString(score));
-                }else score = -1;
+                }else i = -1;
                 break;
             case 12: 
                 if(j.getYathzeeScore().equalsIgnoreCase("")){
                     score =  Evaluation.testYathzee(liste);
                     j.setYathzeeScore(Integer.toString(score));
-                }else score = -1;
+                }else i = -1;
                 break;
             case 13: 
                 if(j.getChanceScore().equalsIgnoreCase("")){
                     score =  Evaluation.testChance(liste);
                     j.setChanceScore(Integer.toString(score));
-                }else score = -1;
+                }else i = -1;
                 break;
-            default:
-                return 0;
         }        
-       
-        return score;
+        
+        j.setTotal(j.getTotal() + score);
+        return i;
     }
     
     private ArrayList<Valeur> lancerLesDes(){
@@ -184,7 +199,6 @@ public class Jeux {
     private void relancerLesDes(String choix , ArrayList<Valeur> liste){
         for(int i = 0; i < 5; i++){
             if(choix.charAt(i) != 'x'){
-                System.out.println("this happened ");
                 liste.set(i, new Des());
             }
         }
